@@ -53,7 +53,7 @@ def drawlegend():
     c.setFillColor(black)
     c.drawString(gridhor[14+i*6]+22, gridvert[-1]-40, stream_names[i])
     c.setFillColorRGB(legend_colours[i][0]/255, legend_colours[i][1]/255, legend_colours[i][2]/255) 
-    c.rect(gridhor[14+i*6], gridvert[-1]-43, 18, 18, stroke = 0, fill=1)
+    c.rect(gridhor[14+i*6], gridvert[-1]-40, 12, 12, stroke = 0, fill=1)
 
 
 #store stream name in stream_names, store list of intervals in streams
