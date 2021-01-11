@@ -101,12 +101,12 @@ def drawintervals(intervals, stream_num): #stream_num is for ordering in figure 
     horizend = gridhor[0]+endtime/msperday*gridwidth
 
     if endmonth == startmonth:  #interval doesn't cross to next month
-      c.rect(horizstart, gridvert[startmonth]-gridwidth*(stream_num+1), horizend - horizstart, 22, stroke = 0, fill=1)
+      c.rect(horizstart, gridvert[startmonth]-22*(stream_num+1), horizend - horizstart, 20, stroke = 0, fill=1)
 
     else:  #interval crosses to next month
       width = gridhor[0] + num_days[startmonth]*gridwidth - horizstart
-      c.rect(horizstart, gridvert[startmonth]-gridwidth*(stream_num+1), width, 22, stroke = 0, fill=1)  #fill in rest of month
-      c.rect(gridhor[0], gridvert[endmonth]-gridwidth*(stream_num+1), horizend - gridhor[0], 22, stroke = 0, fill=1)
+      c.rect(horizstart, gridvert[startmonth]-22*(stream_num+1), width, 20, stroke = 0, fill=1)  #fill in rest of month
+      c.rect(gridhor[0], gridvert[endmonth]-22*(stream_num+1), horizend - gridhor[0], 20, stroke = 0, fill=1)
 
 
 def countmonths(intervals):
