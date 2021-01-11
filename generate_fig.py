@@ -6,10 +6,10 @@ from reportlab.pdfbase.ttfonts import TTFont
 
 c = canvas.Canvas("intervals.pdf")
 gridwidth = 25  #resolution?
-gridhor = [30]  #leftmost point of grid. List contains horizontal locations of vertical lines of grid
-gridvert = [500]  #uppermost point of grid. List contains vert locations of horizontal lines of grid
+gridhor = [10]  #leftmost point of grid. List contains horizontal locations of vertical lines of grid
+gridvert = [50]  #uppermost point of grid. List contains vert locations of horizontal lines of grid
 num_days = [31,28,31,30,31,30,31,31,30,31,30,31]
-legend_colours = [[240,86,49], [106,190,69], [114,206,227]]  #red, green, blue
+legend_colours = [[106,190,69], [240,86,49], [114,206,227]]  #green, red, blue
 stream_names = []  #contains names of streams for legend
 streams = []  #contains the intervals of each stream, for drawing on grid
 msperday = 86400000
@@ -18,12 +18,12 @@ def assemble_gridsize(num_months):
   for i in range (31):
     gridhor.append(gridhor[-1]+gridwidth)
   for i in range (num_months):
-    gridvert.append(gridvert[-1]-gridwidth*len(stream_names))
+    gridvert.append(gridvert[-1]+gridwidth*len(stream_names))
 
 
 def drawbackground(num_months):
   months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-  c.setPageSize( (15*inch, 8.5*inch) )
+  c.setPageSize( (gridhor[-1]+100, gridvert[-1]+10) )
 
   #draw grid
   c.setStrokeColorRGB(220/255, 220/255, 220/255)
@@ -33,16 +33,16 @@ def drawbackground(num_months):
   #draw month names
   c.setFont("Helvetica",17)
   for i in range (num_months):
-    c.drawString(gridhor[-1]+10, gridvert[i]-30, months[i])
+    c.drawString(gridhor[-1]+10, gridvert[num_months-i]-30, months[i])
 
 
   #draw numbers of days
   c.setFont("Helvetica",13)
   for i in range (31):
-    c.drawString(gridhor[i]+8, gridvert[-1]-15, str(i+1))
+    c.drawString(gridhor[i]+8, gridvert[0]-15, str(i+1))
 
   c.setFont("Helvetica",17)
-  c.drawString(gridhor[7], gridvert[-1]-40, "Day of Month")
+  c.drawString(gridhor[7], gridvert[0]-40, "Day of Month")
 
 
 def drawlegend(): 
@@ -51,9 +51,9 @@ def drawlegend():
   #draw coloured squares and stream names
   for i in range(len(stream_names)):
     c.setFillColor(black)
-    c.drawString(gridhor[14+i*6]+22, gridvert[-1]-40, stream_names[i])
+    c.drawString(gridhor[14+i*6]+22, gridvert[0]-40, stream_names[i])
     c.setFillColorRGB(legend_colours[i][0]/255, legend_colours[i][1]/255, legend_colours[i][2]/255) 
-    c.rect(gridhor[14+i*6], gridvert[-1]-40, 12, 12, stroke = 0, fill=1)
+    c.rect(gridhor[14+i*6], gridvert[0]-40, 12, 12, stroke = 0, fill=1)
 
 
 #store stream name in stream_names, store list of intervals in streams
@@ -101,12 +101,12 @@ def drawintervals(intervals, stream_num): #stream_num is for ordering in figure 
     horizend = gridhor[0]+endtime/msperday*gridwidth
 
     if endmonth == startmonth:  #interval doesn't cross to next month
-      c.rect(horizstart, gridvert[startmonth]-22*(stream_num+1), horizend - horizstart, 20, stroke = 0, fill=1)
+      c.rect(horizstart, gridvert[len(gridvert)-1-startmonth]-22*(stream_num+1), horizend - horizstart, 20, stroke = 0, fill=1)
 
     else:  #interval crosses to next month
       width = gridhor[0] + num_days[startmonth]*gridwidth - horizstart
-      c.rect(horizstart, gridvert[startmonth]-22*(stream_num+1), width, 20, stroke = 0, fill=1)  #fill in rest of month
-      c.rect(gridhor[0], gridvert[endmonth]-22*(stream_num+1), horizend - gridhor[0], 20, stroke = 0, fill=1)
+      c.rect(horizstart, gridvert[len(gridvert)-1-startmonth]-22*(stream_num+1), width, 20, stroke = 0, fill=1)  #fill in rest of month
+      c.rect(gridhor[0], gridvert[len(gridvert)-1-endmonth]-22*(stream_num+1), horizend - gridhor[0], 20, stroke = 0, fill=1)
 
 
 def countmonths(intervals):
