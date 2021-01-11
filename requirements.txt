@@ -4,6 +4,7 @@ Requirements and General Info for generate_fig.py
 3. To adjust location of figure in pdf, change the initial values in gridhor and gridvert lists (lines 9 and 10).
 4. Adjust pdf size on line 26 (setPageSize).
 5. Assumes csv files, intervals can span over max. 2 months.
+6. Requires reportlab to be installed.
 
 
 How to run:
