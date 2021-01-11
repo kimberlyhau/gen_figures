@@ -121,7 +121,7 @@ def countmonths(intervals):
 
 if __name__ == "__main__":
 
-  filenames = ["data1.csv", "data1.csv", "data1.csv"]
+  filenames = ["sample_input.csv", "sample_input.csv", "sample_input.csv"]
   for i in filenames:
     readfile(i)  #add stream names and intervals
 
